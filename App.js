@@ -5,7 +5,8 @@
  * @format
  * @flow strict-local
  */
-
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import {
   SafeAreaView,
@@ -26,7 +27,7 @@ import {
 
 const App: () => React$Node = () => {
   return (
-    <>
+    <NavigationContainer>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
@@ -68,7 +69,7 @@ const App: () => React$Node = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </>
+    </NavigationContainer>
   );
 };
 
