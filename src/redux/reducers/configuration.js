@@ -8,12 +8,12 @@ const initialState = {
   still_sizes: [],
 }
 
-export default function setConfigurationReducer(state = initialState, action) {
+export default function setConfigReducer(state = initialState, action) {
   switch (action.type) {
     case 'SET_CONFIG':
       return {
         ...state,
-        base_url: 'http://image.tmdb.org/t/p/'
+        ...action.payload
       }
     default:
       return state
