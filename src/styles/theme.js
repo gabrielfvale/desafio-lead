@@ -32,7 +32,7 @@ export const darkTheme = {
   secondaryDark: '#009a44',
   textOnP: '#ffffff',
   textOnS: '#000000',
-  accent: '#f39c12'
+  accent: '#2ecc71'
 };
 
 export const lightTheme = {
@@ -44,5 +44,5 @@ export const lightTheme = {
   secondaryDark: '#bb6e00',
   textOnP: '#000000',
   textOnS: '#000000',
-  accent: '#27ae60'
+  accent: '#f39c12'
 };
