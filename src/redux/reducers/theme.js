@@ -7,21 +7,16 @@ const initialState = {
 
 export default function themeReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SET_THEME':
+    case 'SUCCESS_GET_THEME':
       return {
-        ...state,
-        ...action.payload
+        name: action.payload.theme,
+        theme: action.payload.theme === 'light' ? lightTheme : darkTheme
       }
-    case 'SWITCH_THEME':
-      let newState = {...state};
-      if(state.name == 'dark') {
-        newState.name = 'light';
-        newState.theme = lightTheme;
-      } else {
-        newState.name = 'dark';
-        newState.theme = darkTheme;
+    case 'SUCCESS_SWITCH_THEME':
+      return {
+        name: action.payload.theme,
+        theme: action.payload.theme === 'light' ? lightTheme : darkTheme
       }
-      return {...newState}
     default:
       return state
   }

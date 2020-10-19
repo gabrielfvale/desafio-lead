@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { TouchableOpacity } from 'react-native';
 import { View, Text } from '../../styles/global';
@@ -44,6 +44,10 @@ const movies = [
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(themeActions.getTheme());
+  }, [])
 
   return (
     <View>

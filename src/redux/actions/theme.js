@@ -1,14 +1,20 @@
+const getTheme = () => {
+  return {
+    type: 'REQUEST_GET_THEME',
+  }
+}
+
 const setTheme = payload => {
   return {
-    type: 'SET_THEME',
+    type: 'REQUEST_SET_THEME',
     payload
   }
 }
 
 const switchTheme = () => {
   return {
-    type: 'SWITCH_THEME',
+    type: 'REQUEST_SWITCH_THEME',
   }
 }
 
-export default { setTheme, switchTheme };
+export default { getTheme, setTheme, switchTheme };

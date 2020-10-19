@@ -1,18 +1,11 @@
-import { call, put, delay, takeLatest } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects'
 
-/* Genre fetching
-function* fetchGenres(action) {
-   try {
-      const user = yield call();
-      yield put({type: "SUCCESS_GET_GENRE", payload: { genres }});
-   } catch (e) {
-      yield put({type: "FAILURE_GET_GENRE");
-   }
-}
-*/
+import themeSagas from './theme';
 
 function* rootSaga() {
-  //yield takeLatest("REQUEST_GET_GENRE", fetchGenres);
+  yield all([
+    ...themeSagas
+  ])
 }
 
 export default rootSaga;
