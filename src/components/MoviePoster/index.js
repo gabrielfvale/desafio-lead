@@ -16,12 +16,14 @@ const MoviePoster = ({ title, genres, posterUri }) => {
         ellipsizeMode='tail'>
         {title}
       </Title>
+      {/*
       <Genres>
         <Text
           numberOfLines={1}>
           {genres.join(', ')}
         </Text>
       </Genres>
+       */}
     </Poster>
   );
 }
