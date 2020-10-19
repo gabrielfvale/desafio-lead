@@ -1,19 +1,36 @@
 import React from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 import { Header, Category, MoreButtonText, Padding } from './styles';
 import MoviePoster from '../MoviePoster';
 import MoviePosterShimmer from '../MoviePoster/shimmer';
 
 const MovieList = ({ category, movies, loading }) => {
   const placeholder = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
+  const navigation = useNavigation();
+
+  const renderMovie = ({ item }) => {
+    if(loading) return <MoviePosterShimmer />;
+    return (
+      <TouchableOpacity
+      onPress={() => navigation.navigate('Details', { movieId: item.id })}>
+        <MoviePoster
+          title={item.title}
+          genres={item.genres}
+          posterUri={item.posterUri}
+        />
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <View>
       <Header>
         <Category>{category}</Category>
         <TouchableOpacity
-          onPress={() => console.log(`Navigate to category "${category}"`)}>
+          onPress={() => navigation.navigate('Category', { category })}>
           <MoreButtonText>
             See all
           </MoreButtonText>
@@ -29,19 +46,7 @@ const MovieList = ({ category, movies, loading }) => {
         ItemSeparatorComponent={() => <Padding />}
         keyExtractor={item => item.id.toString()}
         data={loading ? placeholder : movies}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => console.log('Navigate to details of ' + item.id)}>
-            {loading ?
-            <MoviePosterShimmer />
-            :
-            <MoviePoster
-              title={item.title}
-              genres={item.genres}
-              posterUri={item.posterUri}
-            />}
-          </TouchableOpacity>
-        )}
+        renderItem={renderMovie}
       />
     </View>
   );
