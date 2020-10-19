@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { View, Text } from '../../styles/global';
 
 import { useDispatch } from 'react-redux';
@@ -8,62 +8,71 @@ import themeActions from '../../redux/actions/theme';
 
 import MovieList from '../../components/MovieList';
 
-const movies = [
-  {
-    id: '315635',
-    title: 'Spider-man: Homecoming',
-    genres: ['Action', 'Adventure'],
-    posterUri: '/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg'
-  },
-  {
-    id: '337401',
-    title: 'Mulan',
-    genres: ['Action', 'Adventure'],
-    posterUri: '/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg'
-  },
-  {
-    id: '475557',
-    title: 'Joker',
-    genres: ['Crime', 'Thriller'],
-    posterUri: '/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg'
-  },
-  {
-    id: '454626',
-    title: 'Sonic the Hedgehog',
-    genres: ['Action', 'Adventure'],
-    posterUri: '/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg'
-  },
-  {
-    id: '497582',
-    title: 'Enola Holmes',
-    genres: ['Crime', 'Drama'],
-    posterUri: '/riYInlsq2kf1AWoGm80JQW5dLKp.jpg'
-  },
-];
-
+import api from '../../services/api';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(true);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
+
   useEffect(() => {
     dispatch(themeActions.getTheme());
-  }, [])
+    fetchMovies();
+  }, []);
+
+  const fetchMovies = () => {
+    Promise.all([
+      api.get('movie/now_playing'),
+      api.get('movie/popular'),
+      api.get('movie/top_rated'),
+    ]).then(results => {
+      const categories = ['now_playing', 'popular', 'top_rated'];
+      let fetchedMovies = {};
+      results.map((result, index) => {
+        const { data } = result;
+
+        fetchedMovies[categories[index]] =
+          data.results.map(movie => ({
+            id: movie.id,
+            title: movie.title,
+            posterUri: movie.poster_path
+          }));
+      })
+      setNowPlayingMovies([...fetchedMovies['now_playing']]);
+      setPopularMovies([...fetchedMovies['popular']]);
+      setTopRatedMovies([...fetchedMovies['top_rated']]);
+      setLoading(false);
+    })
+  };
 
   return (
     <View>
-      <TouchableOpacity onPress={() => dispatch(themeActions.switchTheme())}>
-        <Text>Switch theme</Text>
-      </TouchableOpacity>
-      <MovieList
-        navigation={navigation}
-        category="Popular"
-        movies={movies}
-      />
-      <MovieList
-        navigation={navigation}
-        category="Top rated"
-        movies={movies}
-      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TouchableOpacity onPress={() => dispatch(themeActions.switchTheme())}>
+          <Text>Switch theme</Text>
+        </TouchableOpacity>
+        <MovieList
+          navigation={navigation}
+          category="Now playing"
+          movies={nowPlayingMovies}
+          loading={loading}
+        />
+        <MovieList
+          navigation={navigation}
+          category="Popular"
+          movies={popularMovies}
+          loading={loading}
+        />
+        <MovieList
+          navigation={navigation}
+          category="Top rated"
+          movies={topRatedMovies}
+          loading={loading}
+        />
+      </ScrollView>
     </View>
   );
 }
