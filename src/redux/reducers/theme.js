@@ -1,8 +1,8 @@
 import { darkTheme, lightTheme } from '../../styles/theme';
 
 const initialState = {
-  name: 'dark',
-  theme: darkTheme
+  name: 'light',
+  theme: lightTheme
 }
 
 export default function themeReducer(state = initialState, action) {

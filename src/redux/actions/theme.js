@@ -11,9 +11,4 @@ const switchTheme = () => {
   }
 }
 
-const actions = {
-  setTheme,
-  switchTheme
-}
-
-export default actions;
+export default { setTheme, switchTheme };

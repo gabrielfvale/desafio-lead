@@ -8,7 +8,7 @@ const initialState = {
   still_sizes: [],
 }
 
-export default function setConfigReducer(state = initialState, action) {
+export default function configReducer(state = initialState, action) {
   switch (action.type) {
     case 'SET_CONFIG':
       return {
