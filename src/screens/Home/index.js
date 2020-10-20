@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import { ScrollView, TouchableOpacity } from 'react-native';
-import { View, Text } from '../../styles/global';
-
 import { useDispatch } from 'react-redux';
 import themeActions from '../../redux/actions/theme';
 
-import MovieList from '../../components/MovieList';
-
 import api from '../../services/api';
+
+import { ScrollView } from 'react-native';
+import { View } from '../../styles/global';
+import MovieList from '../../components/MovieList';
+import Header from '../../components/Header';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     dispatch(themeActions.getTheme());
     fetchMovies();
+    return () => {}
   }, []);
 
   const fetchMovies = () => {
@@ -51,23 +52,18 @@ const Home = ({ navigation }) => {
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <TouchableOpacity onPress={() => dispatch(themeActions.switchTheme())}>
-          <Text>Switch theme</Text>
-        </TouchableOpacity>
+        <Header />
         <MovieList
-          navigation={navigation}
           category="Now playing"
           movies={nowPlayingMovies}
           loading={loading}
         />
         <MovieList
-          navigation={navigation}
           category="Popular"
           movies={popularMovies}
           loading={loading}
         />
         <MovieList
-          navigation={navigation}
           category="Top rated"
           movies={topRatedMovies}
           loading={loading}

@@ -24,9 +24,9 @@ export const padding = {
 };
 
 export const darkTheme = {
-  primary: '#34495e',
-  primaryLight: '#60748b',
-  primaryDark: '#092234',
+  primary: '#424242',
+  primaryLight: '#6d6d6d',
+  primaryDark: '#1b1b1b',
   secondary: '#2ecc71',
   secondaryLight: '#6effa0',
   secondaryDark: '#009a44',
