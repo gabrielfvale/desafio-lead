@@ -6,26 +6,30 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import { View, Text } from '../styles/global';
+
 import Home from '../screens/Home';
+import Details from '../screens/Details';
+import Category from '../screens/Category';
 
 const Stack = createStackNavigator();
 
-const DetailsScreen = () => <View><Text>Details screen</Text></View>
-const CategoryScreen = () => <View><Text>Category screen</Text></View>
 const SearchScreen = () => <View><Text>Search screen</Text></View>
 
 const Navigation = () => {
   
   const themeDetails = useSelector(state => state.theme);
-
+  const barStyle = {'dark': 'light-content', 'light': 'dark-content'}
   return (
     <NavigationContainer>
       <ThemeProvider theme={themeDetails.theme}>
-        <StatusBar backgroundColor={themeDetails.theme.primaryDark}/>
+        <StatusBar
+          barStyle={barStyle[themeDetails.name]}
+          backgroundColor={themeDetails.theme.primaryDark}
+        />
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="Category" component={CategoryScreen} />
+          <Stack.Screen name="Details" component={Details} />
+          <Stack.Screen name="Category" component={Category} />
           <Stack.Screen name="Search" component={SearchScreen} />
         </Stack.Navigator>
       </ThemeProvider>
