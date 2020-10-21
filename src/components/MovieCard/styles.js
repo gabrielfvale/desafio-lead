@@ -5,8 +5,6 @@ export const Card = styled.View`
   flex-direction: row;
 `;
 
-export const Poster = styled.Image``;
-
 export const Title = styled.Text`
   font-weight: bold;
   font-size: 20px;

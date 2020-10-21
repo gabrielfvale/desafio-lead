@@ -10,13 +10,12 @@ import {
   SeeMoreText,
 } from './styles';
 
+import MoviePoster from '../MoviePoster';
+
 const MovieCard = ({ posterUri, title, overview, loading, onDetailsPress }) => {
   return (
     <Card>
-      <Poster
-        source={{uri: `https://image.tmdb.org/t/p/w300${posterUri}`}}
-        style={{width: 100, height: 150}}
-      />
+      <MoviePoster posterUri={posterUri}/>
       <Content>
         <Title numberOfLines={1}>{title}</Title>
         <Briefing numberOfLines={3}>{overview}</Briefing>
