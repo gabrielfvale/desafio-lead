@@ -30,7 +30,7 @@ const MovieList = ({ category, movies, loading }) => {
       <Header>
         <Category>{category}</Category>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Category', { category })}>
+          onPress={() => navigation.navigate('Search', { queryText: category })}>
           <MoreButtonText>
             See all
           </MoreButtonText>

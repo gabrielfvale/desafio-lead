@@ -10,6 +10,7 @@ import { View, Text } from '../styles/global';
 import Home from '../screens/Home';
 import Details from '../screens/Details';
 import Category from '../screens/Category';
+import Search from '../screens/Search';
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,7 @@ const Navigation = () => {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Details" component={Details} />
           <Stack.Screen name="Category" component={Category} />
-          <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
       </ThemeProvider>
     </NavigationContainer>

@@ -52,7 +52,7 @@ const Home = ({ navigation }) => {
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Header />
+        <Header navigation={navigation}/>
         <MovieList
           category="Now playing"
           movies={nowPlayingMovies}

@@ -44,5 +44,5 @@ export const lightTheme = {
   secondaryDark: '#bb6e00',
   textOnP: '#000000',
   textOnS: '#000000',
-  accent: '#f39c12'
+  accent: '#009a44',
 };
