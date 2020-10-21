@@ -18,6 +18,6 @@ export const IconContainer = styled.View`
 
 export const Input = styled.TextInput`
   background-color: ${props => props.theme.primaryDark};
-  color: ${props => props.theme.textOnP}
+  color: ${props => props.theme.textOnP};
   height: 48px;
 `;

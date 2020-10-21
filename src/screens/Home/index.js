@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import themeActions from '../../redux/actions/theme';
 
-import api from '../../services/api';
-
 import { ScrollView } from 'react-native';
 import { View } from '../../styles/global';
 import MovieList from '../../components/MovieList';
 import Header from '../../components/Header';
+
+import api from '../../services/api';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();

@@ -16,9 +16,10 @@ const Stack = createStackNavigator();
 const SearchScreen = () => <View><Text>Search screen</Text></View>
 
 const Navigation = () => {
-  
+
   const themeDetails = useSelector(state => state.theme);
   const barStyle = {'dark': 'light-content', 'light': 'dark-content'}
+
   return (
     <NavigationContainer>
       <ThemeProvider theme={themeDetails.theme}>
@@ -34,7 +35,7 @@ const Navigation = () => {
         </Stack.Navigator>
       </ThemeProvider>
     </NavigationContainer>
-  )
+  );
 }
 
 export default Navigation;

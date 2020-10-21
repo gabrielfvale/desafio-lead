@@ -7,7 +7,7 @@ const Category = ({ route, navigation }) => {
     <View>
       <Text>Category for "{category}"</Text>
     </View>
-  )
+  );
 }
 
 export default Category;
