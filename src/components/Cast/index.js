@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, FlatList, Image } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,12 +17,15 @@ const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 const PersonShimmer = () => <ShimmerPlaceHolder style={{width: 100, height: 150}} />
 
 const Person = ({ name, profileUri }) => {
+  const fallbackImage = require('../../assets/person_fallback.png');
+  const [imageSource, setImageSource] = useState({uri: `https://image.tmdb.org/t/p/w185${profileUri}`});
   return (
     <PersonProfile>
       <Image
-        source={{uri: `https://image.tmdb.org/t/p/w185${profileUri}`}}
+        source={imageSource}
         style={{width: 100, height: 150}}
-        />
+        onError={() => setImageSource(fallbackImage)}
+      />
       <PersonName
         numberOfLines={2}
         ellipsizeMode='tail'>

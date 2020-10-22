@@ -26,10 +26,6 @@ export const InfoContainer = styled.View`
   margin-left: 16px;
 `;
 
-export const Poster = styled.Image`
-  box-shadow: 10px 5px 5px #000;
-`;
-
 export const GradientOverlay = styled(LinearGradient)`
   width: 100%;
   height: 240px;

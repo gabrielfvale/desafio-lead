@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 

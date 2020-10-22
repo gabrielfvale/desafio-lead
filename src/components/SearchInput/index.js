@@ -3,11 +3,9 @@ import { InputContainer, IconContainer, Input } from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-const SearchInput = ({ currentTheme }) => {
-  const navigation = useNavigation();
+const SearchInput = ({ currentTheme, onSubmit }) => {
   const [inputData, setInputData] = useState('');
 
   return (
@@ -24,7 +22,7 @@ const SearchInput = ({ currentTheme }) => {
         placeholder="Search movies"
         placeholderTextColor={currentTheme.textOnP}
         returnKeyType="search"
-        onSubmitEditing={({ text }) => navigation.navigate('Search', { queryText: text})}
+        onSubmitEditing={() => onSubmit({ text: inputData })}
         onChangeText={setInputData}
       />
     </InputContainer>

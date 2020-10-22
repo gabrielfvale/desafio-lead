@@ -6,7 +6,6 @@ import {
   Backdrop,
   GradientOverlay,
   SecondaryContainer,
-  Poster,
   InfoContainer,
   Title,
   Info,
@@ -14,6 +13,8 @@ import {
 } from './styles';
 
 import { ShimmerPlaceHolder, PosterShimmer, TitleShimmer } from './shimmer';
+
+import MoviePoster from '../MoviePoster';
 
 const DetailsHeader = ({title, tagline, genres, runtime, posterUri, backdropUri, loading = false, currentTheme }) => {
   const { primary } = currentTheme;
@@ -32,9 +33,7 @@ const DetailsHeader = ({title, tagline, genres, runtime, posterUri, backdropUri,
     } else {
       return (
         <>
-          <Poster
-            style={{width: 100, height: 150}}
-            source={{ uri: `https://image.tmdb.org/t/p/w300${posterUri}`}}/>
+          <MoviePoster posterUri={posterUri} />
           <InfoContainer>
             <Title>{title}</Title>
             <Info>{genres.join(', ')} {" • "} {runtime} min</Info>

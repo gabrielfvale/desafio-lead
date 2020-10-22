@@ -1,29 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image } from 'react-native';
 
-import { Poster, Title, Genres } from './styles';
-import { Text } from '../../styles/global';
+import { Poster, Title } from './styles';
 
 const MoviePoster = ({ title, genres, posterUri }) => {
+  const fallbackImage = require('../../assets/movie_fallback.png');
+  const [imageSource, setImageSource] = useState({uri: `https://image.tmdb.org/t/p/w300${posterUri}`});
+
   return (
     <Poster>
       <Image
-        source={{uri: `https://image.tmdb.org/t/p/w300${posterUri}`}}
+        source={imageSource}
         style={{width: 100, height: 150}}
+        onError={() => setImageSource(fallbackImage)}
         />
+      {title &&
       <Title
         numberOfLines={2}
         ellipsizeMode='tail'>
         {title}
       </Title>
-      {/*
-      <Genres>
-        <Text
-          numberOfLines={1}>
-          {genres.join(', ')}
-        </Text>
-      </Genres>
-       */}
+      }
     </Poster>
   );
 }
