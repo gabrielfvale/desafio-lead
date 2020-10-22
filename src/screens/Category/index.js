@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import DetailedMovieList from '../../components/DetailedMovieList';
 import MovieCardShimmer from '../../components/MovieCard/shimmer';
+import FilterModal from './FilterModal';
+import FilterButton from './FilterButton';
 
 import {
   Container,
   Header,
   Title,
-  FilterButton,
-  FilterIcon,
   Padding,
 } from './styles';
 
@@ -22,9 +22,12 @@ const Category = ({ route, navigation, genres }) => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [activeGenres, setActiveGenres] = useState([]);
 
   const [firstLoading, setFirstLoading] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const [filterModal, setFilterModal] = useState(false);
 
   const fetchMovies = async () => {
     if (loading) return;
@@ -40,11 +43,11 @@ const Category = ({ route, navigation, genres }) => {
     setLoading(false);
   }
 
-  const firstFetch = async () => {
+  const firstFetch = async (genres) => {
     setLoading(true);
     setFirstLoading(true);
 
-    const results = await api.get(`/movie/${id}?page=${1}`);
+    const results = await api.get(`/movie/${id}?page=${1}&with_genres=${genres.join(',')}`);
     const { data } = results;
 
     setMovies([...data.results]);
@@ -60,10 +63,16 @@ const Category = ({ route, navigation, genres }) => {
     return <Padding><MovieCardShimmer /></Padding>;
   }
 
+  const closeModalAndFetch = (newGenres) => {
+    setActiveGenres([...newGenres]);
+    setFilterModal(false);
+    firstFetch(newGenres);
+  }
+
   useEffect(() => {
     let componentMounted = true;
 
-    const fetchFirstMovies = async () => await firstFetch();
+    const fetchFirstMovies = async () => await firstFetch([]);
 
     fetchFirstMovies();
     return () => { componentMounted = false };
@@ -73,10 +82,12 @@ const Category = ({ route, navigation, genres }) => {
     <Container>
       <Header>
         <Title>{name}</Title>
-        <FilterButton>
-          <FilterIcon name="filter" size={24}/>
-        </FilterButton>
+        <FilterButton active={activeGenres.length} onPress={() => setFilterModal(true)}/>
       </Header>
+      <FilterModal
+        visible={filterModal}
+        genreList={genreList}
+        onRequestClose={newGenres => closeModalAndFetch(newGenres)} />
       <DetailedMovieList
         loading={firstLoading}
         movies={movies}
