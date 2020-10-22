@@ -49,6 +49,9 @@ const Home = ({ navigation }) => {
     })
   };
 
+  const navigateToDetails = (item) => navigation.navigate('Details', { movieId: item.id });
+  const navigateToCategory = (category) => navigation.navigate('Category', { category });
+
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -57,16 +60,22 @@ const Home = ({ navigation }) => {
           category="Now playing"
           movies={nowPlayingMovies}
           loading={loading}
+          onMoviePress={navigateToDetails}
+          onSeeAllPress={() => navigateToCategory('now_playing')}
         />
         <MovieList
           category="Popular"
           movies={popularMovies}
           loading={loading}
+          onMoviePress={navigateToDetails}
+          onSeeAllPress={() => navigateToCategory('popular')}
         />
         <MovieList
           category="Top rated"
           movies={topRatedMovies}
           loading={loading}
+          onMoviePress={navigateToDetails}
+          onSeeAllPress={() => navigateToCategory('top_rated')}
         />
       </ScrollView>
     </View>

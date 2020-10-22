@@ -7,7 +7,7 @@ import { Header, Category, MoreButtonText, Padding } from './styles';
 import MoviePoster from '../MoviePoster';
 import MoviePosterShimmer from '../MoviePoster/shimmer';
 
-const MovieList = ({ category, movies, loading }) => {
+const MovieList = ({ category, movies, loading, onMoviePress, onSeeAllPress }) => {
   const placeholder = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
   const navigation = useNavigation();
 
@@ -15,7 +15,7 @@ const MovieList = ({ category, movies, loading }) => {
     if(loading) return <MoviePosterShimmer />;
     return (
       <TouchableOpacity
-      onPress={() => navigation.navigate('Details', { movieId: item.id })}>
+        onPress={() => onMoviePress(item)}>
         <MoviePoster
           title={item.title}
           genres={item.genres}
@@ -30,7 +30,7 @@ const MovieList = ({ category, movies, loading }) => {
       <Header>
         <Category>{category}</Category>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Search', { queryText: category })}>
+          onPress={() => onSeeAllPress(category)}>
           <MoreButtonText>
             See all
           </MoreButtonText>
