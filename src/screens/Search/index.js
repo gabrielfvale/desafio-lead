@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import SearchInput from '../../components/SearchInput';
 import DetailedMovieList from '../../components/DetailedMovieList';
+import GridMovieList from '../../components/GridMovieList';
 import MovieCardShimmer from '../../components/MovieCard/shimmer';
+import Icon from 'react-native-vector-icons/Feather';
 
 import {
   Container,
@@ -10,6 +12,8 @@ import {
   Title,
   Content,
   Padding,
+  LayoutSwitcher,
+  LayoutIcon,
 } from './styles';
 
 import api from '../../services/api';
@@ -20,10 +24,19 @@ const Search = ({ route, navigation }) => {
 
   const [query, setQuery] = useState(queryText);
   const [loading, setLoading] = useState(true);
+  const [layout, setLayout] = useState('list');
+
   const [fetchingNext, setFetchingNext] = useState(false);
   const [resultPage, setResultPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [foundMovies, setFoundMovies] = useState([]);
+
+  const switchLayout = () => {
+    let newLayout = layout;
+    if (layout === 'list') newLayout = 'grid';
+    else newLayout = 'list';
+    setLayout(newLayout);
+  }
 
   const fetchMovies = async (query, page = 1) => {
     try {
@@ -86,9 +99,13 @@ const Search = ({ route, navigation }) => {
           initialValue={queryText}
           onSubmit={({ text }) => reFetch(text)}
         />
+        <LayoutSwitcher onPress={switchLayout}>
+          <LayoutIcon name={layout === 'list' ? 'grid' : 'list'} size={24}/>
+        </LayoutSwitcher>
       </SearchContainer>
       <Content>
         <Title>Search results for "{query}"</Title>
+        {layout === 'list' ?
         <DetailedMovieList
           loading={loading}
           movies={foundMovies}
@@ -96,6 +113,16 @@ const Search = ({ route, navigation }) => {
           onEndReached={fetchNextPage}
           footerComponent={() => renderListFooter()}
         />
+        :
+        <GridMovieList
+          loading={loading}
+          movies={foundMovies}
+          onPress={item => navigation.push('Details', { movieId: item.id })}
+          onEndReached={fetchNextPage}
+          footerComponent={() => renderListFooter()}
+        />
+        }
+
       </Content>
     </Container>
   );
