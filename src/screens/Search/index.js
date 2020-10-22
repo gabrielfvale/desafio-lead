@@ -56,7 +56,7 @@ const Search = ({ route, navigation }) => {
   const firstFetch = async (queryText) => {
     setLoading(true);
     setFirstLoading(true);
-    setQuery(queryText)
+    setQuery(queryText);
 
     const results = await api.get(`/search/movie?query=${queryText}&page=${1}`);
     const { data } = results;
