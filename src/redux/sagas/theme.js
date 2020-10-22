@@ -1,10 +1,10 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 
 function* fetchTheme() {
   try {
     const theme = yield call(AsyncStorage.getItem, 'theme');
-    
+
     if (theme !== null) {
       yield put({type: 'SUCCESS_GET_THEME', payload: { theme }});
     } else {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from '../../styles/global';
+import { connect } from 'react-redux';
 
-const Category = ({ route, navigation }) => {
+const Category = ({ route, navigation, genres }) => {
   const { category } = route.params;
   return (
     <View>
@@ -9,5 +10,6 @@ const Category = ({ route, navigation }) => {
     </View>
   );
 }
+const mapState = state => ({ genres: state.genres });
 
-export default Category;
+export default connect(mapState)(Category);

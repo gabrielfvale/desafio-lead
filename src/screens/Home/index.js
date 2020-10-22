@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-import themeActions from '../../redux/actions/theme';
-
 import { ScrollView } from 'react-native';
 import { View } from '../../styles/global';
 import MovieList from '../../components/MovieList';
@@ -11,7 +8,6 @@ import Header from '../../components/Header';
 import api from '../../services/api';
 
 const Home = ({ navigation }) => {
-  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -19,7 +15,6 @@ const Home = ({ navigation }) => {
   const [topRatedMovies, setTopRatedMovies] = useState([]);
 
   useEffect(() => {
-    dispatch(themeActions.getTheme());
     fetchMovies();
     return () => {}
   }, []);

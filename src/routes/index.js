@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import themeActions from '../redux/actions/theme';
+import genreActions from '../redux/actions/genres';
+
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-
-import { View, Text } from '../styles/global';
 
 import Home from '../screens/Home';
 import Details from '../screens/Details';
@@ -14,19 +16,20 @@ import Search from '../screens/Search';
 
 const Stack = createStackNavigator();
 
-const SearchScreen = () => <View><Text>Search screen</Text></View>
+const Navigation = ({ currentTheme, loadApp }) => {
 
-const Navigation = () => {
+  const barStyle = {'dark': 'light-content', 'light': 'dark-content'};
 
-  const themeDetails = useSelector(state => state.theme);
-  const barStyle = {'dark': 'light-content', 'light': 'dark-content'}
+  useEffect(() => {
+    loadApp();
+  }, []);
 
   return (
     <NavigationContainer>
-      <ThemeProvider theme={themeDetails.theme}>
+      <ThemeProvider theme={currentTheme.theme}>
         <StatusBar
-          barStyle={barStyle[themeDetails.name]}
-          backgroundColor={themeDetails.theme.primaryDark}
+          barStyle={barStyle[currentTheme.name]}
+          backgroundColor={currentTheme.theme.primaryDark}
         />
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
@@ -39,4 +42,9 @@ const Navigation = () => {
   );
 }
 
-export default Navigation;
+const mapState = state => ({ currentTheme: state.theme })
+const mapDispatch = dispatch => ({
+  loadApp: () => {dispatch(themeActions.getTheme()); dispatch(genreActions.getGenres())},
+})
+
+export default connect(mapState, mapDispatch)(Navigation);

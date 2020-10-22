@@ -4,7 +4,6 @@ import SearchInput from '../../components/SearchInput';
 import DetailedMovieList from '../../components/DetailedMovieList';
 import GridMovieList from '../../components/GridMovieList';
 import MovieCardShimmer from '../../components/MovieCard/shimmer';
-import Icon from 'react-native-vector-icons/Feather';
 
 import {
   Container,
