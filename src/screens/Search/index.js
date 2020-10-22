@@ -4,6 +4,7 @@ import SearchInput from '../../components/SearchInput';
 import DetailedMovieList from '../../components/DetailedMovieList';
 import GridMovieList from '../../components/GridMovieList';
 import MovieCardShimmer from '../../components/MovieCard/shimmer';
+import { Text } from '../../styles/global';
 
 import {
   Container,
@@ -22,13 +23,14 @@ const Search = ({ route, navigation }) => {
   const { queryText } = route.params;
 
   const [query, setQuery] = useState(queryText);
-  const [loading, setLoading] = useState(true);
   const [layout, setLayout] = useState('list');
 
-  const [fetchingNext, setFetchingNext] = useState(false);
-  const [resultPage, setResultPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [foundMovies, setFoundMovies] = useState([]);
+  const [firstLoading, setFirstLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [movies, setMovies] = useState([]);
 
   const switchLayout = () => {
     let newLayout = layout;
@@ -37,58 +39,48 @@ const Search = ({ route, navigation }) => {
     setLayout(newLayout);
   }
 
-  const fetchMovies = async (query, page = 1) => {
-    try {
-      const results = await api.get(`/search/movie?query=${query}&page=${page}`);
-      return results.data;
-    } catch (error) {
-      console.log(error);
-      return {};
-    }
-  }
+  const fetchMovies = async () => {
+    if (loading || currentPage >= totalPages) return;
 
-  const fetchNextPage = async () => {
-    if (!loading && !fetchingNext && !(resultPage === totalPages) ) {
-      const newPage = resultPage + 1;
-      setFetchingNext(true);
-      setResultPage(newPage);
-
-      const newMovies = await fetchMovies(queryText, newPage);
-      setFoundMovies([...foundMovies, ...newMovies.results]);
-      setFetchingNext(false);
-    }
-  }
-
-  const reFetch = async (query) => {
-    setQuery(query);
     setLoading(true);
-    const newData = await fetchMovies(query);
-    setFoundMovies([...newData.results]);
+
+    const results = await api.get(`/search/movie?query=${query}&page=${currentPage}`);
+    const { data } = results;
+
+    setMovies([...movies, ...data.results]);
+    setCurrentPage(page => page + 1);
+    setTotalPages(data.total_pages);
     setLoading(false);
+  }
+
+  const firstFetch = async (queryText) => {
+    setLoading(true);
+    setFirstLoading(true);
+    setQuery(queryText);
+
+    const results = await api.get(`/search/movie?query=${queryText}&page=${1}`);
+    const { data } = results;
+
+    setMovies([...data.results]);
+    setCurrentPage(2);
+    setTotalPages(data.total_pages);
+    setLoading(false);
+    setFirstLoading(false);
   }
 
   useEffect(() => {
     let componentMounted = true;
 
-    const fetchFirstMovies = async () => {
-      const movies = await fetchMovies(queryText);
-      if (componentMounted) {
-        setFoundMovies([...movies.results]);
-        setTotalPages(movies.total_pages);
-        setLoading(false);
-      }
-    }
-
+    const fetchFirstMovies = async () => await firstFetch(queryText);
     fetchFirstMovies();
+
     return () => { componentMounted = false };
   }, []);
 
   const renderListFooter = () => {
-    if (resultPage === totalPages) {
-      return <><Padding /><Title>No more results</Title><Padding /></>;
-    } else {
-      return <><Padding /><MovieCardShimmer /><Padding /></>
-    }
+    if (!loading && currentPage >= totalPages)
+      return <Padding><Title>No more results</Title></Padding>
+    return <Padding><MovieCardShimmer /></Padding>;
   }
 
   return (
@@ -96,7 +88,7 @@ const Search = ({ route, navigation }) => {
       <SearchContainer>
         <SearchInput
           initialValue={queryText}
-          onSubmit={({ text }) => reFetch(text)}
+          onSubmit={({ text }) => firstFetch(text)}
         />
         <LayoutSwitcher onPress={switchLayout}>
           <LayoutIcon name={layout === 'list' ? 'grid' : 'list'} size={24}/>
@@ -106,19 +98,19 @@ const Search = ({ route, navigation }) => {
         <Title>Search results for "{query}"</Title>
         {layout === 'list' ?
         <DetailedMovieList
-          loading={loading}
-          movies={foundMovies}
+          loading={firstLoading}
+          movies={movies}
           onDetailsPress={item => navigation.push('Details', { movieId: item.id })}
-          onEndReached={fetchNextPage}
-          footerComponent={() => renderListFooter()}
+          onEndReached={fetchMovies}
+          footerComponent={renderListFooter}
         />
         :
         <GridMovieList
-          loading={loading}
-          movies={foundMovies}
+          loading={firstLoading}
+          movies={movies}
           onPress={item => navigation.push('Details', { movieId: item.id })}
-          onEndReached={fetchNextPage}
-          footerComponent={() => renderListFooter()}
+          onEndReached={fetchMovies}
+          footerComponent={renderListFooter}
         />
         }
 
