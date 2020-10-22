@@ -25,7 +25,7 @@ export const Content = styled.View`
 `;
 
 export const Padding = styled.View`
-  padding: 8px;
+  padding: 16px 0 16px 0;
 `;
 
 export const LayoutSwitcher = styled.Pressable`

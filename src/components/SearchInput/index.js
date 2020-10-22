@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { InputContainer, IconContainer, Input } from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -7,6 +8,12 @@ import { connect } from 'react-redux';
 
 const SearchInput = ({ currentTheme, onSubmit }) => {
   const [inputData, setInputData] = useState('');
+
+  const validateAndSubmit = () => {
+    if (inputData.trim()) {
+      onSubmit({ text: inputData });
+    }
+  }
 
   return (
     <InputContainer>
@@ -22,7 +29,7 @@ const SearchInput = ({ currentTheme, onSubmit }) => {
         placeholder="Search movies"
         placeholderTextColor={currentTheme.textOnP}
         returnKeyType="search"
-        onSubmitEditing={() => onSubmit({ text: inputData })}
+        onSubmitEditing={validateAndSubmit}
         onChangeText={setInputData}
       />
     </InputContainer>
